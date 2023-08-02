@@ -70,7 +70,7 @@ const AddProduct = () => {
       formData.append('description', product.description);
       formData.append('proImg', imageFile.file);
 
-      const respuesta = await axios.post('http://192.168.100.16:4001/products', formData);
+      const respuesta = await axios.post('http://75.101.211.126:4001/products', formData);
       console.log(respuesta);
 
       // Obtener la URL de la imagen desde el ID del archivo en Stripe
