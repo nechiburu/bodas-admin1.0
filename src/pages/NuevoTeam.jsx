@@ -19,7 +19,7 @@ const AddTeamForm = () => {
     // Función para obtener las parejas desde el servidor
     const fetchParejas = async () => {
       try {
-        const response = await axios.get('http://192.168.100.16:4001/parejas');
+        const response = await axios.get('http://75.101.211.126:4001/parejas');
         setParejas(response.data); // Actualizamos el estado con las parejas recuperadas
       } catch (error) {
         console.log(error);
@@ -62,16 +62,16 @@ const AddTeamForm = () => {
       formData.append('name', value.name);
 
       // Hacemos otra solicitud para obtener la imagen de la pareja seleccionada
-      const response = await axios.get(`http://192.168.100.16:4001/parejas/${selectedPareja._id}`);
+      const response = await axios.get(`http://75.101.211.126:4001/parejas/${selectedPareja._id}`);
       if (response && response.data && response.data.pSimg) {
-        const imageBlob = await fetch(`http://192.168.100.16:4001/uploads/${response.data.pSimg}`).then((res) => res.blob());
+        const imageBlob = await fetch(`http://75.101.211.126:4001/uploads/${response.data.pSimg}`).then((res) => res.blob());
         formData.append('tImg', imageBlob, response.data.pSimg);
       } else {
         toast.error('No se pudo obtener la imagen de la pareja seleccionada');
         return;
       }
 
-      const respuesta = await axios.post('http://192.168.100.16:4001/team', formData);
+      const respuesta = await axios.post('http://75.101.211.126:4001/team', formData);
       console.log(respuesta);
       toast.success('El equipo se agregó correctamente');
 

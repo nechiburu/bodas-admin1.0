@@ -77,7 +77,7 @@ const AddParejaForm = () => {
       formData.append('date', value.date);
       formData.append('location', value.location);
 
-      const respuesta = await axios.post('http://192.168.100.16:4001/parejas', formData);
+      const respuesta = await axios.post('http://75.101.211.126:4001/parejas', formData);
       console.log(respuesta);
       toast.success('La pareja se agregó correctamente');
 
