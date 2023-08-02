@@ -4,6 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useState, useEffect } from 'react';
 import SimpleReactValidator from 'simple-react-validator';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -70,7 +72,7 @@ const AddProduct = () => {
       formData.append('description', product.description);
       formData.append('proImg', imageFile.file);
 
-      const respuesta = await axios.post(process.env.BACKEND_URL + '/products', formData);
+      const respuesta = await axios.post('75.101.211.126:4001/products', formData);
       console.log(respuesta);
 
       // Obtener la URL de la imagen desde el ID del archivo en Stripe
