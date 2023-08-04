@@ -7,26 +7,23 @@ import SimpleReactValidator from 'simple-react-validator';
 
 const AddTeamForm = () => {
   const [value, setValue] = useState({
-    slug: '',
     title: '',
     name: '',
   });
 
-  const [parejas, setParejas] = useState([]); // Agregamos el estado para almacenar las parejas
-  const [selectedPareja, setSelectedPareja] = useState(null); // Estado para almacenar la pareja seleccionada
+  const [parejas, setParejas] = useState([]);
+  const [selectedPareja, setSelectedPareja] = useState(null);
 
   useEffect(() => {
-    // Función para obtener las parejas desde el servidor
     const fetchParejas = async () => {
       try {
-        const response = await axios.get('http://75.101.211.126:4001/parejas');
-        setParejas(response.data); // Actualizamos el estado con las parejas recuperadas
+        const response = await axios.get('https://75.101.211.126:4001/parejas');
+        setParejas(response.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    // Llamamos a la función fetchParejas una vez cuando el componente se monta
     fetchParejas();
   }, []);
 
@@ -41,7 +38,6 @@ const AddTeamForm = () => {
     validator.showMessages();
   };
 
-  // Función para manejar el cambio en la selección de pareja
   const handleParejaChange = (e) => {
     const selectedPareja = parejas.find((pareja) => pareja.title === e.target.value);
     setSelectedPareja(selectedPareja);
@@ -57,27 +53,25 @@ const AddTeamForm = () => {
       }
 
       const formData = new FormData();
-      formData.append('slug', selectedPareja.title); // El slug tendrá el mismo valor que el nombre de la pareja seleccionada
+      formData.append('slug', selectedPareja.slug); // Enviamos el slug de la pareja seleccionada
       formData.append('title', value.title);
       formData.append('name', value.name);
 
       // Hacemos otra solicitud para obtener la imagen de la pareja seleccionada
-      const response = await axios.get(`http://75.101.211.126:4001/parejas/${selectedPareja._id}`);
+      const response = await axios.get(`http://localhost:4001/parejas/${selectedPareja._id}`);
       if (response && response.data && response.data.pSimg) {
-        const imageBlob = await fetch(`http://75.101.211.126:4001/uploads/${response.data.pSimg}`).then((res) => res.blob());
+        const imageBlob = await fetch(`http://localhost:4001/uploads/${response.data.pSimg}`).then((res) => res.blob());
         formData.append('tImg', imageBlob, response.data.pSimg);
       } else {
         toast.error('No se pudo obtener la imagen de la pareja seleccionada');
         return;
       }
 
-      const respuesta = await axios.post('http://75.101.211.126:4001/team', formData);
+      const respuesta = await axios.post('http://localhost:4001/team', formData);
       console.log(respuesta);
       toast.success('El equipo se agregó correctamente');
 
-      // Limpiar los campos del formulario y el estado de la pareja seleccionada después de agregar exitosamente
       setValue({
-        slug: '',
         title: '',
         name: '',
       });
@@ -111,7 +105,7 @@ const AddTeamForm = () => {
                     name="title"
                     id="title"
                     value={value.title}
-                    onChange={changeHandler} // Cambio para el manejo del cambio
+                    onChange={changeHandler}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -126,7 +120,7 @@ const AddTeamForm = () => {
                     id="name"
                     name="name"
                     value={value.name}
-                    onChange={handleParejaChange} // Cambio para el manejo del cambio de pareja
+                    onChange={handleParejaChange}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   >
                     <option disabled value="">
